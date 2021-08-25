@@ -3,11 +3,11 @@ name: Nestjs Hello world app CI+CD pipeline
 on:
   push: # tüm branchlerdeki codebase test edilmesi icin sadece push yeterli.
      branches-ignore: # sadece feature branchler ile pushlanan codebase'in test edilmesi için 
-       - main
+       - master
        - develop
   pull_request:  #feature branchlerden develop veya main branch'e pullrequest merge edildiğinde calisacak.
      branches : 
-       - main
+       - master
        - develop
      types:
        - closed #closed event'ı burada dogru bir secim olmayabilir,pull request merge edilmese bile tetikleyici calisiyor,pr kapandıgında tetikleniyor.
