@@ -19,7 +19,6 @@ jobs:
 
     if: ${{ github.event_name != 'pull_request' }} 
     runs-on: [self-hosted,docker-env] # self-hosted google cloud uzerinde konumlandirilan runner ile calismasi icin.
-    needs: [test]
     steps:
     #bu action repo varligini kontrol ediyor.
     - uses: actions/checkout@v2
@@ -133,7 +132,7 @@ jobs:
   
       
   
-  
+   
 
 
 
