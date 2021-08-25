@@ -1,4 +1,4 @@
-name: Nestjs Hello world app ci+cd pipeline
+name: Nestjs Hello world app CI+CD pipeline
 
 on:
   push: # tüm branchlerdeki codebase test edilmesi icin sadece push yeterli.
@@ -20,8 +20,6 @@ jobs:
     if: ${{ github.event_name != 'pull_request' }} 
     runs-on: [self-hosted,docker-env] # self-hosted google cloud uzerinde konumlandirilan runner ile calismasi icin.
     steps:
-    - name: github event name
-      run: echo ${{github.event_name}}
     #bu action repo varligini kontrol ediyor.
     - uses: actions/checkout@v2
     - name: Use Node.js 14.5.7 lts version
