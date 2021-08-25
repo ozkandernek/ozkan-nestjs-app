@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 COPY  . /usr/src/app/
 
-RUN yarn
+RUN  yarn install --frozen-lockfile
 
 RUN yarn build
 

@@ -7,7 +7,7 @@ on:
        - develop
   pull_request:  #feature branchlerden develop veya main branch'e pullrequest merge edildiğinde calisacak.
      branches : 
-       - main
+       - master
        - develop
      types:
        - closed #closed event'ı burada dogru bir secim olmayabilir,pull request merge edilmese bile tetikleyici calisiyor,pr kapandıgında tetikleniyor.
