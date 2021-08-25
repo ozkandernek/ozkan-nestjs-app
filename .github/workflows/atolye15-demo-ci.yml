@@ -99,9 +99,10 @@ jobs:
     needs: [build_stg]
     steps:
       
-      - name: Kubernetes baglantı ortamı testi.
+      - name: stg.atolye.ozkandernek.dev.yaml deploy edilecek.
         run: |
-           touch /home/devopsdernek/test.txt
+           
+           kubectl apply -f https://raw.githubusercontent.com/ozkandernek/atolye15-nestjs-app/develop/stg.atolye.ozdernek.dev.yaml -n stage
 
 
       
