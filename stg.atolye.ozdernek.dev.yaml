@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world-nestjs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hello-world-nestjs
+  template:
+    metadata:
+      labels:
+        app: hello-world-nestjs
+    spec:
+      containers:
+      - name: hello-world-nestjs
+        image: docker.io/ozkandernek/demo_stg:latest
+        ports:
+        - containerPort: 3000
+        resources:
+            requests:
+              cpu: 250m
+              memory: 750Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-world-nestjs
+spec:
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    app: hello-world-nestjs
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-world-nestjs-ingress
+  namespace: stage
+
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-stg
+    kubernetes.io/ingress.class: "nginx"
+    
+spec:
+  rules:
+  - host: stg.atolye.ozdernek.dev
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: hello-world-nestjs
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - stg.atolye.ozdernek.dev
+    secretName: stg.atolye.ozdernek.dev-tls
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-stg
+  namespace: stage
+spec:
+  acme:
+    # The ACME server URL
+    server: https://acme-v02.api.letsencrypt.org/directory
+    # Email address used for ACME registration
+    email: ozkandernek@gmail.com
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: letsencrypt-stg
+    # Enable the HTTP-01 challenge provider
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: stg.atolye.ozdernek.dev
+  namespace: stage
+spec:
+  secretName: stg.atolye.ozdernek.dev-tls
+  issuerRef:
+    name: letsencrypt-stg
+    kind: ClusterIssuer
+  commonName: stg.atolye.ozdernek.dev
+  dnsNames:
+  - stg.atolye.ozdernek.dev
+   
+

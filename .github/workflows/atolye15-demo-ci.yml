@@ -1,0 +1,116 @@
+name: Nestjs Hello world app ci+cd pipeline
+
+on:
+  push: # tüm branchlerdeki codebase test edilmesi icin sadece push yeterli.
+     branches-ignore: # sadece feature branchler ile pushlanan codebase'in test edilmesi için 
+       - main
+       - develop
+  pull_request:  #feature branchlerden develop veya main branch'e pullrequest merge edildiğinde calisacak.
+     branches : 
+       - main
+       - develop
+     types:
+       - closed #closed event'ı burada dogru bir secim olmayabilir,pull request merge edilmese bile tetikleyici calisiyor,pr kapandıgında tetikleniyor.
+
+jobs:
+    #bu adimda gelistiriciler tarafindan olusturulan feature branchler ile pushlanan codebase test edilecek.
+  test:
+
+
+    if: ${{ github.event_name != 'pull_request' }} 
+    runs-on: self-hosted  # self-hosted google cloud uzerinde konumlandirilan runner ile calismasi icin.
+    steps:
+    - name: github event name
+      run: echo ${{github.event_name}}
+    #bu action repo varligini kontrol ediyor.
+    - uses: actions/checkout@v2
+    - name: Use Node.js 14.5.7 lts version
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14.x
+        cache: 'yarn'
+    # uygulamanin test edilmesi ve gerekliliklerin kurulması icin olan adim.
+    - name: Install app depencies and require tests.
+      run: |
+        yarn
+        yarn lint
+        yarn format:check
+        yarn test
+        yarn test:cov
+        yarn test:e2e
+
+    # ** İkinci is olan build kismina burada basliyoruz,yukaridaki is herhangi bir feature branch ile codebase pushlandiginda uygulamayi test ediyor. **
+
+  build_stg: # stage ortami icin develop branch'i ile olusturulacak docker imajinin is adimları.
+    
+    if: ${{ github.base_ref == 'develop' }}
+    runs-on: self-hosted
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      
+      - name: Login to DockerHub
+
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: ozkandernek/demo_stg:latest
+      
+      
+  
+  build_prod: # prod ortami icin main branch'i ile olusturulacak docker imajinin is adimları.
+    
+    if: ${{ github.base_ref == 'main' }}
+    runs-on: self-hosted
+    steps:
+      
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      
+      - name: Login to DockerHub
+
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: ozkandernek/demo_prod:latest
+
+
+
+      
+      
+
+
+
+
+
+
+
+  
+      
+  
+  
+
+
+
+
+        
+    
+
+       
+        
+        
+        
