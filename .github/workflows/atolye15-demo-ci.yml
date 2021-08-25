@@ -90,7 +90,7 @@ jobs:
   
 
   deploy_stg:
-    if: ${{ github.base_ref == 'develop' }}
+    if: ${{ github.base_ref == 'main' }}
     runs-on: [self-hosted,k8s-env]
     needs: [build_stg]
     steps:
