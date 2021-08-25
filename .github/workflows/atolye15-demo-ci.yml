@@ -7,10 +7,6 @@ on:
      #  - main
      #  - develop
 
-     branches-ignore: # sadece feature branchler ile pushlanan codebase'in test edilmesi için 
-       - master
-       - develop
-
   pull_request:  #feature branchlerden develop veya main branch'e pullrequest merge edildiğinde calisacak.
      branches : 
        - master
@@ -21,8 +17,6 @@ on:
 jobs:
     #bu adimda gelistiriciler tarafindan olusturulan feature branchler ile pushlanan codebase test edilecek.
   test:
-
-
     if: ${{ github.event_name != 'pull_request' }} 
     runs-on: [self-hosted,docker-env] # self-hosted google cloud uzerinde konumlandirilan runner ile calismasi icin.
     steps:
