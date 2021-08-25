@@ -60,6 +60,9 @@ jobs:
         with:
           push: true
           tags: ozkandernek/demo_stg:latest
+      - name: Clean Docker Environment
+        run: |
+           sudo docker system prune -a -f
       
       
   
@@ -85,10 +88,13 @@ jobs:
         with:
           push: true
           tags: ozkandernek/demo_prod:latest
+      - name: Clean Docker Environment
+        run: |
+           sudo docker system prune -a -f
   
 
   deploy_stg:
-    if: ${{ github.base_ref == 'master' }}
+    if: ${{ github.base_ref == 'develop' }}
     runs-on: [self-hosted,k8s-env]
     needs: [build_stg]
     steps:
