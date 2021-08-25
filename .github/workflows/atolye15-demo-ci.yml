@@ -105,6 +105,19 @@ jobs:
            kubectl apply -f https://raw.githubusercontent.com/ozkandernek/atolye15-nestjs-app/develop/stg.atolye.ozdernek.dev.yaml -n stage
 
            kubectl rollout restart deployment hello-world-nestjs -n stage
+  
+  deploy_prod:
+    if: ${{ github.base_ref == 'master' }}
+    runs-on: [self-hosted,k8s-env]
+    needs: [build_prod]
+    steps:
+      
+      - name: prod.atolye.ozkandernek.dev.yaml deploy edilecek.
+        run: |
+           
+           kubectl apply -f https://raw.githubusercontent.com/ozkandernek/atolye15-nestjs-app/master/prod.atolye.ozdernek.dev.yaml -n production
+
+           kubectl rollout restart deployment hello-world-nestjs -n production
       
       
 
