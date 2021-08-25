@@ -65,7 +65,7 @@ jobs:
   
   build_prod: # prod ortami icin main branch'i ile olusturulacak docker imajinin is adimları.
     
-    if: ${{ github.base_ref == 'main' }}
+    if: ${{ github.base_ref == 'master' }}
     runs-on: [self-hosted,docker-env]
     steps:
       
@@ -88,7 +88,7 @@ jobs:
   
 
   deploy_stg:
-    if: ${{ github.base_ref == 'main' }}
+    if: ${{ github.base_ref == 'master' }}
     runs-on: [self-hosted,k8s-env]
     needs: [build_stg]
     steps:
