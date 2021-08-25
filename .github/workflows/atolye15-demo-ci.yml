@@ -94,7 +94,7 @@ jobs:
   
 
   deploy_stg:
-    if: ${{ github.base_ref == 'master' }}
+    if: ${{ github.base_ref == 'develop' }}
     runs-on: [self-hosted,k8s-env]
     needs: [build_stg]
     steps:
