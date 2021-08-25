@@ -1,11 +1,13 @@
+#Nestjs Hello World app icin Workflow. Özkan D.
+
 name: Nestjs Hello world app CI+CD pipeline
 
 on:
   push: # tüm branchlerdeki codebase test edilmesi icin sadece push yeterli.
 
-     branches-ignore: # sadece feature branchler ile pushlanan codebase'in test edilmesi için 
-       - main
-       - develop
+    # branches-ignore: # sadece feature branchler ile pushlanan codebase'in test edilmesi için 
+    #   - main
+    #   - develop
 
   pull_request:  #feature branchlerden develop veya main branch'e pullrequest merge edildiğinde calisacak.
      branches : 
@@ -41,7 +43,7 @@ jobs:
 
   build_stg: # stage ortami icin develop branch'i ile olusturulacak docker imajinin is adimları.
     needs: [test]
-    if: ${{ github.base_ref == 'develop' }}
+    if: ${{ github.base_ref == 'develop' && github.event_name == 'pull_request'}}
     runs-on: [self-hosted,docker-env]
     steps:
       - name: Set up QEMU
@@ -68,7 +70,7 @@ jobs:
   
   build_prod: # prod ortami icin main branch'i ile olusturulacak docker imajinin is adimları.
     needs: [test]
-    if: ${{ github.base_ref == 'master' }}
+    if: ${{ github.base_ref == 'master' && github.event_name == 'pull_request' }}
     runs-on: [self-hosted,docker-env]
     steps:
       
