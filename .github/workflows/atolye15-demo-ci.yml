@@ -2,9 +2,9 @@ name: Nestjs Hello world app CI+CD pipeline
 
 on:
   push: # tüm branchlerdeki codebase test edilmesi icin sadece push yeterli.
-     branches-ignore: # sadece feature branchler ile pushlanan codebase'in test edilmesi için 
-       - main
-       - develop
+     #branches-ignore: # sadece feature branchler ile pushlanan codebase'in test edilmesi için 
+     #  - main
+     #  - develop
   pull_request:  #feature branchlerden develop veya main branch'e pullrequest merge edildiğinde calisacak.
      branches : 
        - main
@@ -19,6 +19,7 @@ jobs:
 
     if: ${{ github.event_name != 'pull_request' }} 
     runs-on: [self-hosted,docker-env] # self-hosted google cloud uzerinde konumlandirilan runner ile calismasi icin.
+    needs: [test]
     steps:
     #bu action repo varligini kontrol ediyor.
     - uses: actions/checkout@v2
@@ -43,6 +44,7 @@ jobs:
     
     if: ${{ github.base_ref == 'develop' }}
     runs-on: [self-hosted,docker-env]
+    needs: [test]
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -70,6 +72,7 @@ jobs:
     
     if: ${{ github.base_ref == 'master' }}
     runs-on: [self-hosted,docker-env]
+    needs: [test]
     steps:
       
       - name: Set up QEMU
