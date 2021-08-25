@@ -42,7 +42,6 @@ jobs:
     # ** İkinci is olan build kismina burada basliyoruz,yukaridaki is herhangi bir feature branch ile codebase pushlandiginda uygulamayi test ediyor. **
 
   build_stg: # stage ortami icin develop branch'i ile olusturulacak docker imajinin is adimları.
-    needs: [test]
     if: ${{ github.base_ref == 'develop' && github.event_name == 'pull_request'}}
     runs-on: [self-hosted,docker-env]
     steps:
@@ -69,7 +68,6 @@ jobs:
       
   
   build_prod: # prod ortami icin main branch'i ile olusturulacak docker imajinin is adimları.
-    needs: [test]
     if: ${{ github.base_ref == 'master' && github.event_name == 'pull_request' }}
     runs-on: [self-hosted,docker-env]
     steps:
