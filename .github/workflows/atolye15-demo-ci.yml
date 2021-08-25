@@ -18,7 +18,7 @@ jobs:
 
 
     if: ${{ github.event_name != 'pull_request' }} 
-    runs-on: self-hosted  # self-hosted google cloud uzerinde konumlandirilan runner ile calismasi icin.
+    runs-on: [self-hosted,docker-env] # self-hosted google cloud uzerinde konumlandirilan runner ile calismasi icin.
     steps:
     - name: github event name
       run: echo ${{github.event_name}}
@@ -44,7 +44,7 @@ jobs:
   build_stg: # stage ortami icin develop branch'i ile olusturulacak docker imajinin is adimları.
     
     if: ${{ github.base_ref == 'develop' }}
-    runs-on: self-hosted
+    runs-on: [self-hosted,docker-env]
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -68,7 +68,7 @@ jobs:
   build_prod: # prod ortami icin main branch'i ile olusturulacak docker imajinin is adimları.
     
     if: ${{ github.base_ref == 'main' }}
-    runs-on: self-hosted
+    runs-on: [self-hosted,docker-env]
     steps:
       
       - name: Set up QEMU
@@ -87,7 +87,17 @@ jobs:
         with:
           push: true
           tags: ozkandernek/demo_prod:latest
+  
 
+  deploy_stg:
+    if: ${{ github.base_ref == 'develop' }}
+    runs-on: [self-hosted,k8s-env]
+    needs: [build_stg]
+    steps:
+      
+      - name: Kubernetes baglantı ortamı testi.
+        run: |
+           touch /home/devopsdernek/test.txt
 
 
       
