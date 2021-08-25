@@ -3,9 +3,9 @@ name: Nestjs Hello world app CI+CD pipeline
 on:
   push: # tüm branchlerdeki codebase test edilmesi icin sadece push yeterli.
 
-     #branches-ignore: # sadece feature branchler ile pushlanan codebase'in test edilmesi için 
-     #  - main
-     #  - develop
+     branches-ignore: # sadece feature branchler ile pushlanan codebase'in test edilmesi için 
+       - main
+       - develop
 
   pull_request:  #feature branchlerden develop veya main branch'e pullrequest merge edildiğinde calisacak.
      branches : 
@@ -40,10 +40,9 @@ jobs:
     # ** İkinci is olan build kismina burada basliyoruz,yukaridaki is herhangi bir feature branch ile codebase pushlandiginda uygulamayi test ediyor. **
 
   build_stg: # stage ortami icin develop branch'i ile olusturulacak docker imajinin is adimları.
-    
+    needs: [test]
     if: ${{ github.base_ref == 'develop' }}
     runs-on: [self-hosted,docker-env]
-    needs: [test]
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -68,10 +67,9 @@ jobs:
       
   
   build_prod: # prod ortami icin main branch'i ile olusturulacak docker imajinin is adimları.
-    
+    needs: [test]
     if: ${{ github.base_ref == 'master' }}
     runs-on: [self-hosted,docker-env]
-    needs: [test]
     steps:
       
       - name: Set up QEMU
