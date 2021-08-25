@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: hello-world-nestjs
-        image: docker.io/ozkandernek/demo_stg:latest
+        image: docker.io/ozkandernek/demo_prod:latest
         ports:
         - containerPort: 3000
         resources:
@@ -45,15 +45,15 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: hello-world-nestjs-ingress
-  namespace: stage
+  namespace: production
 
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-stg
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: "nginx"
     
 spec:
   rules:
-  - host: stg.atolye.ozdernek.dev
+  - host: prod.atolye.ozdernek.dev
     http:
       paths:
       - pathType: Prefix
@@ -65,14 +65,14 @@ spec:
               number: 80
   tls:
   - hosts:
-    - stg.atolye.ozdernek.dev
-    secretName: stg.atolye.ozdernek.dev-tls
+    - prod.atolye.ozdernek.dev
+    secretName: prod.atolye.ozdernek.dev-tls
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: letsencrypt-stg
-  namespace: stage
+  name: letsencrypt-prod
+  namespace: production
 spec:
   acme:
     # The ACME server URL
@@ -81,7 +81,7 @@ spec:
     email: ozkandernek@gmail.com
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
-      name: letsencrypt-stg
+      name: letsencrypt-prod
     # Enable the HTTP-01 challenge provider
     solvers:
     - http01:
@@ -91,15 +91,15 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: stg.atolye.ozdernek.dev
-  namespace: stage
+  name: prod.atolye.ozdernek.dev
+  namespace: production
 spec:
-  secretName: stg.atolye.ozdernek.dev-tls
+  secretName: prod.atolye.ozdernek.dev-tls
   issuerRef:
-    name: letsencrypt-stg
+    name: letsencrypt-prod
     kind: ClusterIssuer
-  commonName: stg.atolye.ozdernek.dev
+  commonName: prod.atolye.ozdernek.dev
   dnsNames:
-  - stg.atolye.ozdernek.dev
+  - prod.atolye.ozdernek.dev
    
 
