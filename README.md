@@ -3,7 +3,7 @@
 
 - Docker,Docker hub registry
 - GKE(Kubeadm ile 1 master-3 worker içeren cluster yapısı kuruldu.),GCP (1 VPC instance icerisinde Nodejs 14.5.7 en son kararlı sürüm calisiyor ve yarn paket yoneticisi)  uygulama bu instance üzerinde dockerize ediliyor aradaki bağlantılar github self-runner ile sağlandı. 
-- CI + CD pipeline olarak ilkkez github actions workflow denedim. 
+- CI + CD pipeline olarak ilk defa github actions workflow denedim. 
 
 - Kuralları 1 VPC instance icerisinde local ortamda Nodejs 14.5.7 yarn ile test ediliyor,aynı sürümler docker içerisinde tanımlandı. 
  Lint kurallari geciyor mu: `yarn lint`
