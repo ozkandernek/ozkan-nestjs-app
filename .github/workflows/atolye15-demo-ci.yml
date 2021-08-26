@@ -122,11 +122,11 @@ jobs:
            kubectl apply -f https://raw.githubusercontent.com/ozkandernek/atolye15-nestjs-app/master/prod.atolye.ozdernek.dev.yaml -n production
 
            kubectl rollout restart deployment hello-world-nestjs -n production
-
+#stage ortamına deploy olduktan sonra slack kanalına bildirimde bulunacak.
   slackNotification:
     name: Slack Notification
     runs-on: self-hosted
-    needs: [deploy_stg,deploy_prod]
+    needs: deploy_stg
     steps:
     - uses: actions/checkout@v2
     - name: Slack Notification
