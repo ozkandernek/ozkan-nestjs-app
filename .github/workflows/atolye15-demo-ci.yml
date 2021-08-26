@@ -97,7 +97,8 @@ jobs:
 
   deploy_stg:
     if: ${{ github.base_ref == 'develop' }}
-    runs-on: [self-hosted,k8s-env]
+    #runs-on: [self-hosted,k8s-env] k8s network kopuyor bu nedenle docker instance icerisindeki kubectl k8s'e bakacak sekilde ayarlandi.
+    runs-on: [self-hosted,docker-env]
     needs: build_stg
     steps:
       
@@ -112,7 +113,8 @@ jobs:
 
   deploy_prod:
     if: ${{ github.base_ref == 'master' }}
-    runs-on: [self-hosted,k8s-env]
+    #runs-on: [self-hosted,k8s-env] k8s network kopuyor bu nedenle docker instance icerisindeki kubectl k8s'e bakacak sekilde ayarlandi.
+    runs-on: [self-hosted,docker-env]
     needs: build_prod
     steps:
       
