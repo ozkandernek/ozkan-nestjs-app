@@ -110,8 +110,6 @@ jobs:
 
       
 
-      
-
   deploy_prod:
     if: ${{ github.base_ref == 'master' }}
     runs-on: [self-hosted,k8s-env]
@@ -128,6 +126,7 @@ jobs:
   slackNotification:
     name: Slack Notification
     runs-on: self-hosted
+    needs: [deploy_stg,deploy_prod]
     steps:
     - uses: actions/checkout@v2
     - name: Slack Notification
