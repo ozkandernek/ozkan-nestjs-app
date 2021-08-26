@@ -1,3 +1,15 @@
+
+# Kullanılan Teknolojiler ve Ortamlar.
+
+- Docker,Docker Hub registry
+- GKE(Kubeadm ile 1 master-3 worker içeren cluster yapısı kuruldu.),GCP (1 VPC instance icerisinde Nodejs 14.5.7 en son kararlı sürüm calisiyor ve yarn paket yoneticisi)  uygulama bu instance üzerinde dockerize ediliyor aradaki bağlantılar github self-runner ile sağlandı. 
+
+- Kubermetes ortamanında Nginx ingress deploy edilip,cert-manager ile sertifikalar alınması sağlandı.
+
+- Github workflow içerisine slack kanalına mesaj atan bir action eklendi.
+
+
+
 # Atolye15 Demo
 
 Bu ekrana sadece Hello world yazdiran basit bir Nest.JS uygulamasi. Senden asagidaki sekilde bir pipeline olusturmani bekliyoruz;
@@ -23,3 +35,7 @@ Pipeline'in istedigin kismini es gecebilir veya kendince daha dogru oldugunu dus
 NOT: Dependency'lerin kurulmasi icin proje dizininde `yarn` komutunun calistirilmasi gerekiyor.
 
 NOT: Uygulama `yarn start:prod` komutu ile ayaga 3000 portunda ayaga kalkiyor.
+
+
+
+ 
