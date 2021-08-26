@@ -1,11 +1,13 @@
+#Nestjs Hello World app icin Workflow. Özkan D.
+
 name: Nestjs Hello world app CI+CD pipeline
 
 on:
   push: # tüm branchlerdeki codebase test edilmesi icin sadece push yeterli.
 
-    # branches-ignore: # sadece feature branchler ile pushlanan codebase'in test edilmesi için 
-    #   - main
-    #   - develop
+  #   branches-ignore: # sadece feature branchler ile pushlanan codebase'in test edilmesi için.
+  #     - main
+  #     - develop
 
   pull_request:  #feature branchlerden develop veya main branch'e pullrequest merge edildiğinde calisacak.
      branches : 
@@ -17,7 +19,7 @@ on:
 jobs:
     #bu adimda gelistiriciler tarafindan olusturulan feature branchler ile pushlanan codebase test edilecek.
   test:
-    if: ${{ github.event_name != 'pull_request' }} 
+    #if: ${{ github.event_name != 'pull_request' }} 
     runs-on: [self-hosted,docker-env] # self-hosted google cloud uzerinde konumlandirilan runner ile calismasi icin.
     steps:
     #bu action repo varligini kontrol ediyor.
@@ -40,7 +42,7 @@ jobs:
     # ** İkinci is olan build kismina burada basliyoruz,yukaridaki is herhangi bir feature branch ile codebase pushlandiginda uygulamayi test ediyor. **
 
   build_stg: # stage ortami icin develop branch'i ile olusturulacak docker imajinin is adimları.
-    needs: [test]
+    needs: test
     if: ${{ github.base_ref == 'develop' && github.event_name == 'pull_request'}}
     runs-on: [self-hosted,docker-env]
     steps:
@@ -67,7 +69,7 @@ jobs:
       
   
   build_prod: # prod ortami icin main branch'i ile olusturulacak docker imajinin is adimları.
-    needs: [test]
+    needs: test
     if: ${{ github.base_ref == 'master' && github.event_name == 'pull_request' }}
     runs-on: [self-hosted,docker-env]
     steps:
@@ -96,7 +98,7 @@ jobs:
   deploy_stg:
     if: ${{ github.base_ref == 'develop' }}
     runs-on: [self-hosted,k8s-env]
-    needs: [build_stg]
+    needs: build_stg
     steps:
       
       - name: stg.atolye.ozkandernek.dev.yaml deploy edilecek.
@@ -105,11 +107,15 @@ jobs:
            kubectl apply -f https://raw.githubusercontent.com/ozkandernek/atolye15-nestjs-app/develop/stg.atolye.ozdernek.dev.yaml -n stage
 
            kubectl rollout restart deployment hello-world-nestjs -n stage
-  
+
+      
+
+      
+
   deploy_prod:
     if: ${{ github.base_ref == 'master' }}
     runs-on: [self-hosted,k8s-env]
-    needs: [build_prod]
+    needs: build_prod
     steps:
       
       - name: prod.atolye.ozkandernek.dev.yaml deploy edilecek.
@@ -118,6 +124,16 @@ jobs:
            kubectl apply -f https://raw.githubusercontent.com/ozkandernek/atolye15-nestjs-app/master/prod.atolye.ozdernek.dev.yaml -n production
 
            kubectl rollout restart deployment hello-world-nestjs -n production
+
+  slackNotification:
+    name: Slack Notification
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v2
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
       
       
 
