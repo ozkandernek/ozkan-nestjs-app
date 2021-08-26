@@ -107,7 +107,11 @@ jobs:
            kubectl apply -f https://raw.githubusercontent.com/ozkandernek/atolye15-nestjs-app/develop/stg.atolye.ozdernek.dev.yaml -n stage
 
            kubectl rollout restart deployment hello-world-nestjs -n stage
-  
+
+      
+
+      
+
   deploy_prod:
     if: ${{ github.base_ref == 'master' }}
     runs-on: [self-hosted,k8s-env]
@@ -120,6 +124,16 @@ jobs:
            kubectl apply -f https://raw.githubusercontent.com/ozkandernek/atolye15-nestjs-app/master/prod.atolye.ozdernek.dev.yaml -n production
 
            kubectl rollout restart deployment hello-world-nestjs -n production
+
+  slackNotification:
+    name: Slack Notification
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v2
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
       
       
 
