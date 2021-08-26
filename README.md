@@ -8,6 +8,10 @@
 
 - Github workflow içerisine slack kanalına mesaj atan bir action eklendi.
 
+- CI + CD workflow stage ortamına deploy yapıldığında webhook ile slack kanalında bildirimde bulunuyor.
+
+* stg.atolye.ozdernek.dev ,prod.atolye.ozdernek.dev adreslerinden uygulamalara erisim saglanabilir.
+
 
 
 # Atolye15 Demo
