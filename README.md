@@ -21,7 +21,9 @@
 
 - CI + CD workflow stage ortamına deploy yapıldığında webhook ile slack kanalında bildirimde bulunuyor.
 
+
 * Olusturulan ortamlara erisim [stage](https://stg.atolye.ozdernek.dev)  , [prod](https://prod.atolye.ozdernek.dev) adreslerinden uygulamalara erisim saglanabilir.
+
 
 
 <img width="1259" alt="slack-bildirim" src="https://user-images.githubusercontent.com/30561237/130888308-1b729869-2cb7-4cfd-b2e8-c96a8dda670c.png">
