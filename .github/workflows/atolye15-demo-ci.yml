@@ -108,11 +108,7 @@ jobs:
 
            kubectl rollout restart deployment hello-world-nestjs -n stage
 
-      - name: Send GitHub Action trigger data to Slack workflow
-        id: slack
-        uses: slackapi/slack-github-action@v1.14.0
-        env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      
 
       
 
@@ -128,6 +124,16 @@ jobs:
            kubectl apply -f https://raw.githubusercontent.com/ozkandernek/atolye15-nestjs-app/master/prod.atolye.ozdernek.dev.yaml -n production
 
            kubectl rollout restart deployment hello-world-nestjs -n production
+
+  slackNotification:
+    name: Slack Notification
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v2
+    - name: Slack Notification
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
       
       
 
