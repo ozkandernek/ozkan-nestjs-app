@@ -2,7 +2,7 @@
 # Kullanılan Teknolojiler ve Ortamlar.
 
 - Docker,Docker hub registry
-- GKE(Kubeadm ile 1 master-3 worker içeren cluster yapısı kuruldu.),GCP (1 VPC instance icerisinde Nodejs 14.17.5 en son kararlı sürüm calisiyor ve yarn paket yoneticisi)  uygulama bu instance üzerinde dockerize ediliyor aradaki bağlantılar github self-runner ile sağlandı. 
+- GCP(Kubeadm ile 1 master-3 worker içeren cluster yapısı kuruldu.),GCP (1 VPC instance icerisinde Nodejs 14.17.5 en son kararlı sürüm calisiyor ve yarn paket yoneticisi)  uygulama bu instance üzerinde dockerize ediliyor aradaki bağlantılar github self-runner ile sağlandı. 
 - CI + CD pipeline olarak ilk defa github actions workflow denedim. 
 
 - Kuralları 1 VPC instance icerisinde local ortamda Nodejs 14.17.5 yarn ile test ediliyor,aynı sürümler docker içerisinde tanımlandı. 
@@ -15,7 +15,7 @@
  E2E testler geciyor mu: `yarn test:e2e`
  ```
 
-- Kubermetes ortamanında Nginx ingress deploy edilip,cert-manager ile sertifikalar alınması sağlandı.
+- Kubermetes ortamanında nginx ingress deploy edilip,cert-manager ile sertifikalar alınması sağlandı.
 
 - Github workflow içerisine slack kanalına mesaj atan bir action eklendi.
 
