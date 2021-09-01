@@ -2,10 +2,11 @@
 # Kullanılan teknolojiler ve ortamlar.
 
 - Docker,Docker hub registry
-- GCP(Kubeadm ile 1 master-3 worker içeren cluster yapısı kuruldu.),GCP (1 VPC instance icerisinde Nodejs 14.17.5 en son kararlı sürüm calisiyor ve yarn paket yoneticisi)  uygulama bu instance üzerinde dockerize ediliyor aradaki bağlantılar github self-runner ile sağlandı. 
+- GCP(Kubeadm ile 1 master - 3 worker içeren Kubernetes cluster yapısı kuruldu.)
+- GCP (1 VPC instance icerisine Nodejs 14.17.5 en son kararlı sürüm ,Yarn  ve Docker kuruldu.)  uygulama bu instance üzerinde codebase test edilip dockerize ediliyor. Bahsedilen iş akışı github workflow ile VPC üzerinde konumlandırılan  self-runner vasıtası ile sağlanmaktadır. 
 - CI + CD pipeline olarak  github actions workflow kullanıldı.
 
-- Kuralları 1 VPC instance icerisinde local ortamda Nodejs 14.17.5 yarn ile test ediliyor,aynı sürümler docker içerisinde tanımlandı. 
+- VPC instance icerisinde aşağıdaki kurallar local ortamda Nodejs 14.17.5 ve yarn ile test ediliyor,aynı sürümler docker imaj içerisinde tanımlandı. 
  
  ```
  Lint kurallari geciyor mu: `yarn lint`
@@ -14,12 +15,13 @@
  Coverage threshold'una uyulmus mu?: `yarn test:cov`
  E2E testler geciyor mu: `yarn test:e2e`
  ```
+* Bu işlemlerden sonra Docker hub registry kullanılarak imajlar public repolara eklenmiştir.Daha sonra Kubernetes manifestolarında kullanıldı.
 
-- Kubermetes ortamanında nginx ingress deploy edilip,cert-manager ile sertifikalar alınması sağlandı.
+- Kubernetes ortamanında nginx ingress deploy edilip,cert-manager ile sertifikaların alınması sağlandı.
 
 - Github workflow içerisine slack kanalına mesaj atan bir action eklendi.
 
-- CI + CD workflow stage ortamına deploy yapıldığında webhook ile slack kanalında bildirimde bulunuyor.
+- CI + CD workflow ile uygulama stage ortamına deploy edildiğinde  webhook ile slack kanalında bildirimde bulunuyor.
 
 
 * Olusturulan ortamlara erisim [stage](https://stg.atolye.ozdernek.dev)  , [prod](https://prod.atolye.ozdernek.dev) adreslerinden uygulamalara erisim saglanabilir.
