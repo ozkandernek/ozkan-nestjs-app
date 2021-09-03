@@ -105,7 +105,7 @@ jobs:
       - name: stg.atolye.ozkandernek.dev.yaml deploy edilecek.
         run: |
            
-           kubectl apply -f https://raw.githubusercontent.com/ozkandernek/ozkan-nestjs-app/develop/stg.atolye.ozdernek.dev.yaml -n stage
+           kubectl apply -f https://raw.githubusercontent.com/ozkandernek/ozkan-nestjs-app/develop/stg.ozdernek.dev.yaml -n stage
 
            kubectl rollout restart deployment hello-world-nestjs -n stage
 
@@ -121,7 +121,7 @@ jobs:
       - name: prod.atolye.ozkandernek.dev.yaml deploy edilecek.
         run: |
            
-           kubectl apply -f https://raw.githubusercontent.com/ozkandernek/ozkan-nestjs-app/master/prod.atolye.ozdernek.dev.yaml -n production
+           kubectl apply -f https://raw.githubusercontent.com/ozkandernek/ozkan-nestjs-app/master/prod.ozdernek.dev.yaml -n production
 
            kubectl rollout restart deployment hello-world-nestjs -n production
 #stage ortamına deploy olduktan sonra slack kanalına bildirimde bulunacak.
